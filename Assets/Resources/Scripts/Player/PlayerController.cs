@@ -7,33 +7,35 @@ public class PlayerController : MonoBehaviour
 
 /*Esta linea hace que funciones todo el script, todo debe estas dentro de sus llaves*/
 {
-    public Vector3 mousePos = Input.mousePosition;
     private Vector3 lastPosition;
-    public float speed = 4f;
-    public Vector3 pos;
-    private Rigidbody player; /*Cuerpo rigido que permite moverse*/
+    private Rigidbody player;
+    public float speedRun = 4f;
     private Vector3 moveInput;
     void Start()
     {
+
         player = GetComponent<Rigidbody>(); /*El objeto se establece a si mismo como el player*/
     }
 
     // Update is called once per frame
     void Update()
     {
+        lastPosition = new Vector3(player.position.x, player.position.y, player.position.z);
+        Vector3 mousePos = Input.mousePosition;
         moveInput = new Vector3(mousePos.x, 0, mousePos.z);
-        if (Input.GetButton("2"))
+
+
+        if (Input.GetMouseButtonDown(2))
         {
-            pos = Input.mousePosition;
-            pos.z = 45;
-            pos = Camera.main.ScreenToWorldPoint(pos);
+            player.velocity = new Vector3((lastPosition.x + moveInput.x) * speedRun, 0, (lastPosition.z + moveInput.z) * speedRun);
         }
-        transform.position = Vector3.Lerp(transform.moveInput, pos, speed * Time.deltaTime);
-
-
+        if (player.position == moveInput)
+        {
+            player.velocity = new Vector3(0, 0, 0);
+        }
     }
     private void FixedUpdate()
     {
-        player.MovePosition(player.position + moveInput.normalized * speed * Time.fixedDeltaTime);
+        player.MovePosition(player.position + moveInput.normalized * speedRun * Time.fixedDeltaTime);
     }
 }

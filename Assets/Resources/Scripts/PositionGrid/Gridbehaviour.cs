@@ -165,7 +165,7 @@ public class GridBehaviour : MonoBehaviour
             gridArray[x, y].GetComponent<GridStat>().visited = step;
         }
     }
-    GameObject FindClosest(Transforn targetLocation, List<GameObject> list)
+    GameObject FindClosest(Transform targetLocation, List<GameObject> list)
     {
         float curentdistance = Scale * rows * columns;
         int indexNumber = 0;

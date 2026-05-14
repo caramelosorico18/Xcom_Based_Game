@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridBehaviour : MonoBehaviour
 {
+    public bool findDistance = false;
     public int rows = 10;
     public int columns = 10;
     public int Scale = 1;
@@ -15,6 +16,7 @@ public class GridBehaviour : MonoBehaviour
     public int endX = 2;
     public int endY = 2;
     public List<GameObject> path = new List<GameObject>();
+    public float currentDistance;
     void Awake()
     {
         gridArray = new GameObject[columns, rows];
@@ -28,7 +30,12 @@ public class GridBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (findDistance)
+        {
+            SetDistance();
+            SetPath();
+            findDistance = false;
+        }
     }
     void generateGrid()
     {
@@ -36,10 +43,10 @@ public class GridBehaviour : MonoBehaviour
         {
             for (int j = 0; j < rows; j++)
             {
-                GameObject obj = Instantiate(gridPrefab, new Vector3(LeftBottomLocation.x + Scale * i, leftBottomLocation.y + Scale * j, LeftBottomLocation.z + scale * j), Quaterion.identity);
+                GameObject obj = Instantiate(gridPrefab, new Vector3(LeftBottomLocation.x + Scale * i, LeftBottomLocation.y + Scale * j, LeftBottomLocation.z + Scale * j), Quaternion.identity);
                 obj.transform.SetParent(gameObject.transform);
-                obj.getComponent<GridStats>().x = i;
-                obj.getComponent<GridStats>().y = j;
+                obj.GetComponent<GridStat>().x = i;
+                obj.GetComponent<GridStat>().y = j;
                 gridArray[i, j] = obj;
             }
         }
@@ -49,12 +56,12 @@ public class GridBehaviour : MonoBehaviour
         InitialSetUp();
         int x = startX;
         int y = startY;
-        int[] testArray = new int[rows * coluns];
-        for (int step = i; step < rown * columns; step++)
+        int[] testArray = new int[rows * columns];
+        for (int step = 1; step < rows * columns; step++)
         {
             foreach (GameObject obj in gridArray)
             {
-                if (obj.GetComponent<GridStat>().visited == step - 1)
+                if (obj && obj.GetComponent<GridStat>().visited == step - 1)
                 {
                     TestFourDirections(obj.GetComponent<GridStat>().x, obj.GetComponent<GridStat>().y, step);
                 }
@@ -96,43 +103,43 @@ public class GridBehaviour : MonoBehaviour
             {
                 tempList.Add(gridArray[x - 1, y]);
             }
-            GameObject tempObj = FindClosest(gridArray[endX, endY].trandform, tempList);
+            GameObject tempObj = FindClosest(gridArray[endX, endY].transform, tempList);
             path.Add(tempObj);
             x = tempObj.GetComponent<GridStat>().x;
             y = tempObj.GetComponent<GridStat>().y;
-            tempList().Clear;
+            tempList.Clear();
         }
     }
     void InitialSetUp()
     {
-        foreach (GameObject obj in grisArray)
+        foreach (GameObject obj in gridArray)
         {
-            obj.GetComponentz<GridStat>().visited = -1;
+            obj.GetComponent<GridStat>().visited = -1;
         }
-        gridArray[startX, startY].getCOmponent<GridStats>().visited = 0;
+        gridArray[startX, startY].GetComponent<GridStat>().visited = 0;
     }
     bool TestDirection(int x, int y, int step, int direction)
     {
         //direction => 1UP, 2Right, 3Down, 4Left
         switch (direction)
         {
-            case 4:
-                if (x - 1 > -1 && gridArray[x - 1, y] && gridArray[x - 1, y].GetComponent<GridStat>().visited = step)
-                { return true; }
-                else
-                { return false; }
             case 1:
-                if (y - 1 > -1 && gridArray[x, y - 1] && gridArray[x, y - 1].GetComponent<GridStat>().visited = step)
+                if (y - 1 > -1 && gridArray[x, y - 1] && gridArray[x, y - 1].GetComponent<GridStat>().visited == step)
                 { return true; }
                 else
                 { return false; }
             case 2:
-                if (x + 1 < columns && gridArray[x + 1, y] && gridArray[x + 1, y].GetComponent<GridStat>().visited = step)
+                if (x + 1 < columns && gridArray[x + 1, y] && gridArray[x + 1, y].GetComponent<GridStat>().visited == step)
                 { return true; }
                 else
                 { return false; }
-            case 1:
-                if (y + 1 < rows && gridArray[x, y + 1] && gridArray[x, y + 1].GetComponent<GridStat>().visited = step)
+            case 3:
+                if (y + 1 < rows && gridArray[x, y + 1] && gridArray[x, y + 1].GetComponent<GridStat>().visited == step)
+                { return true; }
+                else
+                { return false; }
+            case 4:
+                if (x - 1 > -1 && gridArray[x - 1, y] && gridArray[x - 1, y].GetComponent<GridStat>().visited == step)
                 { return true; }
                 else
                 { return false; }
@@ -143,22 +150,22 @@ public class GridBehaviour : MonoBehaviour
     {
         if (TestDirection(x, y, -1, 1))
         {
-            setVisited(x, y + 1, step);
+            SetVisited(x, y + 1, step);
         }
         if (TestDirection(x, y, -1, 2))
         {
-            setVisited(x + 1, y, step);
+            SetVisited(x + 1, y, step);
         }
-        if (TestDirection(x, y - 1, 3))
+        if (TestDirection(x, y, -1, 3))
         {
-            setVisited(x, y - 1, step);
+            SetVisited(x, y - 1, step);
         }
         if (TestDirection(x, y, -1, 4))
         {
-            setVisited(x - 1, y, step);
+            SetVisited(x - 1, y, step);
         }
     }
-    void setVisited(int x, int y, int step)
+    void SetVisited(int x, int y, int step)
     {
         if (gridArray[x, y])
         {
@@ -173,7 +180,7 @@ public class GridBehaviour : MonoBehaviour
         {
             if (Vector3.Distance(targetLocation.position, list[i].transform.position) < currentDistance)
             {
-                currentDistance = Vector3.Distance(targetLocation.position, list[i].tranform.position);
+                currentDistance = Vector3.Distance(targetLocation.position, list[i].transform.position);
                 indexNumber = i;
             }
         }

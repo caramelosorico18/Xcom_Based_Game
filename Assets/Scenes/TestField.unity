@@ -1481,7 +1481,7 @@ GameObject:
   - component: {fileID: 2079692213}
   - component: {fileID: 2079692212}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: GridMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1499,14 +1499,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fb46312d0ab01e43a7bebf3e6ffe0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visited: -1
-  x: 0
-  y: 0
-  rows: 100
-  columns: 100
+  rows: 10
+  columns: 10
   distance: 1
-  grid: {fileID: 1567989471158670790, guid: 588f19c9916170d43a019b72add58822, type: 3}
-  leftBottomPoint: {x: 0, y: 0, z: 0}
+  gridPoint: {fileID: 1567989471158670790, guid: 588f19c9916170d43a019b72add58822,
+    type: 3}
+  leftBottomLocation: {x: 0, y: 0, z: 0}
 --- !u!4 &2079692213
 Transform:
   m_ObjectHideFlags: 0

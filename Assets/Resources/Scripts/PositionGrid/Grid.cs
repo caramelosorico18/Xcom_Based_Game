@@ -37,16 +37,17 @@ public class Grid {
         }
         Debug.DrawLine(GetWorldPosition(0, depth), GetWorldPosition(width, depth), Color.white, 100f);
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, depth), Color.white, 100f);
-        SetValue(2, 1, 56);
+        //SetValue(2, 1, 56);
     }
     private Vector3 GetWorldPosition(int x, int z)
     {
-        return new Vector3(x, 1, z) * cellSize + originPosition;
+        return new Vector3(x * cellSize, 0, z * cellSize) + originPosition;
     }
     private void GetXZ(Vector3 worldPosition, out int x, out int z)
     {
         x = Mathf.FloorToInt((worldPosition.x - originPosition.x) / cellSize);
         z = Mathf.FloorToInt((worldPosition.z - originPosition.z) / cellSize);
+        Debug.Log(x + z);
     }
 
     public void SetValue(int x, int z, int value)
@@ -55,7 +56,7 @@ public class Grid {
         {
             gridArray[x, 0, z] = value;
             debugTextArray[x, z].text = gridArray[x, 0, z].ToString();
-            debugTextArray[x, z].transform.rotation = Quaternion.Euler(90, 0, 0);
+            //debugTextArray[x, z].transform.rotation = Quaternion.Euler(90, 0, 0);
         }
     }
     public void SetValue(Vector3 worldPosition, int value)

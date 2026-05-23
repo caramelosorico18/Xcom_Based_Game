@@ -14,11 +14,11 @@ public class Test : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            grid.SetValue(UtilsClass.GetMouseWorldPosition(), 55);
+            grid.SetValue(UtilsClass.GetMouseWorldPositionWithZ(), 55);
         }
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log(grid.GetValue(UtilsClass.GetMouseWorldPosition()));
+            Debug.Log(grid.GetValue(UtilsClass.GetMouseWorldPositionWithZ()));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PathFinding {
+    /*
     public float gCost;
     public float hCost;
     public float fCost;
@@ -17,4 +18,5 @@ public class PathFinding {
     {
         fCost = hCost + gCost;
     }
+    */
 }

@@ -13,7 +13,7 @@ public class GenarateGrid : MonoBehaviour {
     public GameObject Node;
     public int ncols;
     public int nrows;
-    void Start(){
+    void Awake(){
         coordinate = new Vector3(x, y, z);
         size = new Vector3(width, height, depth);
         
@@ -40,9 +40,13 @@ public class GenarateGrid : MonoBehaviour {
                 size = new Vector3(1, 1, 1);
                 coordinate = new Vector3(i, coordinate.y, j);
                 Instantiate(Node, new Vector3(i, coordinate.y, j), Quaternion.identity);
-                Gizmos.DrawWireCube(transform.position, new Vector3(coordinate.x, coordinate.y, coordinate.z));
                 Debug.Log("X: " + coordinate.x + "Y: " + coordinate.y + "Z: " + coordinate.z);
             }
         }
+    }
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(coordinate.x, coordinate.y, coordinate.z));
+
     }
 }

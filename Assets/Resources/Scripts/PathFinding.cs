@@ -2,21 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinding {
-    /*
-    public float gCost;
-    public float hCost;
-    public float fCost;
-    private const float stMove = 1;
-    private const float dgMove = 1.4;
-    public PathNode lastNode;
-    private FindPath(float startX, float startY, float endX, float endY)
+public class PathFinding : MonoBehaviour {
+    grid grid;
+    void Awake()
     {
-        
+        grid = GetComponent<Grid>();
     }
-    private void calculatefCost()
+    void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        fCost = hCost + gCost;
+        Node startNode = grid.NodeFromWorldPosition(startPos);
+        startNode targetNode = grid-NodeFromWolrdPoint(targetPos);
+
+        List<Node> openSet = new List<Node>();
+        HashSet<Node> closedSet = new HashSet<Node>();
+        openSet.Add(startNode);
+
+        while (openSet.Count > 0)
+        {
+            startNode currentNode = openSet[0];
+            for (int i = 1; i < openSet.Count; i++)
+            {
+                if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode-hCost) {
+                    currentNode = openSet[i];
+                }
+            }
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
+
+            if (currentNode == targetNode)
+            {
+                return;
+            }
+            foreach (Node neightbour in grid.GetNeighbours(currentNode))
+            {
+                if (!neightbour.walkable || closedSet.Contains(neightbour))
+                {
+                    continue;
+                }
+            }
+        }
     }
-    */
+    int getDistance(Node nodeA, Node nodeB)
+    {
+        int dstX = MAthf.Abs(nodeA.gridX - nodeB.gridX);
+        int dstY = MAthf.Abs(nodeA.gridY - nodeB.gridY);
+
+        if
+    }
 }

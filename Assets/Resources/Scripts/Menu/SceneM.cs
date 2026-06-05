@@ -9,7 +9,7 @@ public class SceneM : MonoBehaviour
 {
     public void play()
     {
-        SceneManager.LoadScene("Level1", LoadSceneMode.Single);
+        SceneManager.LoadScene("lvl1", LoadSceneMode.Single);
     }
     public void BackMenu()
     {
@@ -17,6 +17,6 @@ public class SceneM : MonoBehaviour
     }
     public void Exit()
     {
-        
+
     }
 }

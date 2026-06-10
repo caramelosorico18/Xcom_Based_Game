@@ -7,29 +7,28 @@ public class PlayerController : MonoBehaviour
 
 /*Esta linea hace que funciones todo el script, todo debe estas dentro de sus llaves*/
 {
-    public Rigidbody2D player;
-    public float inputMovimientoH; /*Registra inputs*/
-    public float inputMovimientoV;
-
+    public Rigidbody player;
+    public PlayerStats playerStats;
+    public float inputMovimientoX; /*Registra inputs*/
+    public float inputMovimientoZ;
     public float speed;
     public float jumpHeight;
     public float health;
-    public float gravity = -19f;
-    public GroundedController groundCheck;
-    public bool isGrounded;
-    public float groundDistance;
+    public float gravity = -190f;
     public LayerMask groundMask;
-    public enum direction;
-    public PlayerStats playerStats;
-    public Animator PyAnims;
-    Vector3 velocity;
-    bool isMoving;
+    public GroundedController groundCheck;
+
+    public string direction;
+    private bool isGrounded;
+    public float groundDistance;
+    //public PlayerStats playerStats;
+    //public Animator PyAnims;
+    private Vector3 velocity;
+    private bool isMoving;
     private Vector3 lastPosition = new Vector3(0f, 0f, 0f);
-    
-    public enum direction{none, w, d, s, a, wd, Wa, sd, sa}
     void Start()
     {
-        player = GetComponent<Rigidbody2D>();
+        player = GetComponent<Rigidbody>();
         health = playerStats.MaxHealth;
         speed = playerStats.SpeedRun;
         jumpHeight = playerStats.SpeedJump;
@@ -38,75 +37,101 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = groundCheck.IsGrounded();
         ProcesarMovimiento();
-        if(isGrounded && velocity.y < 0)
+        if (health <= 0)
         {
-            velocity.y = -2f;
+            Die();
         }
 
-        
-
-        Vector3 move = transform.right * x + transform.forward * y;
-
-        controller.Move(move * speed * Time.deltaTime);
-
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        /*if (Input.GetMouseButtonDown(0))
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
-
-        //Falling
-        velocity.y = gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
-        if(lastPosition != gameObject.transform.position && isGrounded == true)
-        {
-            isMoving = true;
-        }
-        else
-        {
-            isMoving = false;
-        }
+            Shoot();
+        }*/
     }
 
     void ProcesarMovimiento()
     {
-        float inputMovimientoH = Input.GetAxis("Horizontal");
-        float inputMovimientoV = Input.GetAxis("Vertical");
-        player.velocity = new Vector3(inputMovimientoH, inputMovimientoV, player.velocity.y);
+        float inputMovimientoX = Input.GetAxis("Horizontal");
+        float inputMovimientoZ = Input.GetAxis("Vertical");
+        Vector3 move = transform.right * inputMovimientoZ + transform.forward * inputMovimientoX;
+        player.AddForce(move * speed * Time.deltaTime);
         //PyAnims.SetBool("Walking", true);
-        //if(inputMovimientoH == 0 && inputMovimientoV == 0){PyAnims.SetBool("Walking", false);}
+        //if(inputMovimientoX == 0 && inputMovimientoZ == 0){PyAnims.SetBool("Walking", false);}
     }
     void FixedUpdate()
     {
-        switch (Input.GetKey)
+        if (isGrounded == false) { player.AddForce(0, gravity, 0); }
+
+        if (Input.GetKey("d"))
         {
-            //Cambiar(enum direction)*
-            case input.GetKey("w"):
-            PyAnims.SetBool("WalkingFw", true);
-            direction = 1;
-
-            case input.GetKey("d"):
-            PyAnims.SetBool("WalkingRg", true);
-            direction = 2;
-
-             case input.GetKey("s"):
-            PyAnims.SetBool("WalkingBw", true);
-            direction = 3;
-
-            case input.GetKey("a"):
-            PyAnims.SetBool("WalkingLf", true);
-            direction = 4;
-
-            case input.GetKey("w"):
-            PyAnims.SetBool("WalkingFw", true);
-            direction = 1;
+            player.AddForce(transform.right * speed);
+            //anim.SetBool("Walking", true);
+            //direction = 1;
         }
-        switch (direction)
+        if (Input.GetKey("s"))
         {
-            case direction == 1:
-
+            player.AddForce(transform.forward * -speed);
+            //direction = 2;
+        }
+        if (Input.GetKey("a"))
+        {
+            player.AddForce(transform.right * -speed);
+            //anim.SetBool("Walking", true);
+            //direction = 3;
+        }
+        if (Input.GetKey("w"))
+        {
+            player.AddForce(transform.forward * speed);
+            //direction = 4;
+        }
+        if (Input.GetKey("w") && Input.GetKey("d"))
+        {
+            player.AddForce(transform.right * speed);
+            player.AddForce(transform.forward * speed);
+            //direction = 5;
+        }
+        if (Input.GetKey("w") && Input.GetKey("a"))
+        {
+            player.AddForce(transform.right * speed);
+            player.AddForce(transform.forward * speed);
+            //direction = 6;
+        }
+        if (Input.GetKey("s") && Input.GetKey("a"))
+        {
+            player.AddForce(transform.right * speed);
+            player.AddForce(transform.forward * speed);
+            //direction = 7;
+        }
+        if (Input.GetKey("s") && Input.GetKey("d"))
+        {
+            player.AddForce(transform.right * speed);
+            player.AddForce(transform.forward * speed);
+            //direction = 8;
+        }
+        if (Input.GetKey("space") && isGrounded == true)
+        {
+            player.AddForce(transform.up * jumpHeight);
         }
     }
+
+    public void Die()
+    {
+        gameObject.SetActive(false);
+        Debug.Log("Sa Murío");
+    }
+
+    /*public void Shoot()
+    {
+        GameObject bullet = BulletPool.SharedInstance.GetPooledObject();
+        if (bullet != null)
+        {
+            bullet.transform.position = playerb.transform.position;
+            bullet.transform.rotation = playerb.transform.rotation;
+            if (Time.timeScale != 0)
+            {
+                bullet.SetActive(true);
+            }
+        }
+    }*/
 }

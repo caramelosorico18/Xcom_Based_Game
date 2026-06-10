@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MouseController : MonoBehaviour
 {
-public float mouseSensitivity = 300f;
-float xRotation = 0f;
-float yRotation = 0f;
+    public float mouseSensitivity = 300f;
+    float xRotation = 0f;
+    float yRotation = 0f;
 
     void Start()
     {
@@ -27,6 +27,6 @@ float yRotation = 0f;
 
         yRotation += mouseX;
 
-        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        transform.localRotation = Quaternion.Euler(xRotation + 8.98f, yRotation + 2.24f, 0f);
     }
 }

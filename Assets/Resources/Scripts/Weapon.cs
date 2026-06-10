@@ -27,7 +27,8 @@ public class Weapon : MonoBehaviour
     private IEnumerator DestroyBulletAfterTime(GameObject bullet, float bulletPrefabLifeTime)
     {
         yield return new WaitForSeconds(bulletPrefabLifeTime);
+        Debug.Log("Bullet destroyed after " + bulletPrefabLifeTime + " seconds");
         Destroy(bullet);
-        Debug.Log("Bullet destroyed after " + bulletPrefabLifeTime + " seconds.");
+        
     }
 }

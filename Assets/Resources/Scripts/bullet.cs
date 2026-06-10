@@ -8,8 +8,7 @@ public class bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Aquí puedes agregar lógica para dañar al enemigo
-            Debug.Log("Impacto");
+            print("hit" + collision.gameObject.name + " !");
         }
         // Destruye la bala al colisionar con cualquier objeto
         Destroy(gameObject);

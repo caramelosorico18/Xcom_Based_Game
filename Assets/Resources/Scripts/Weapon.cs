@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class Weapon : MonoBehaviour
     public float bulletPrefabLifeTime = 3f;
 
     public GameObject muzzleEffect;
+    private Animator animator;
+
+    public float reloadTime;
+    public int magazineSize, bulletsLeft;
+    public bool isReloading;
+
     public enum shootingMode
     {
         Single, Burst, Auto
@@ -26,9 +34,15 @@ public class Weapon : MonoBehaviour
     {
         readyToShoot = true;
         burstBulletsLeft = bulletsPerBurst;
+        animator = GetComponent<Animator>();
+        bulletsLeft = magazineSize;
     }
     void Update()
     {
+        if(bulletsLeft == 0 && isShooting)
+        {
+            SoundManager.Instance.EmptyPistol.Play();
+        }
         if(currentShootingMode == shootingMode.Auto)
         {
             isShooting = Input.GetKey(KeyCode.Mouse0); //hold button only
@@ -37,16 +51,33 @@ public class Weapon : MonoBehaviour
         {
             isShooting = Input.GetKeyDown(KeyCode.Mouse0); //Just once per click
         }
-        if(readyToShoot && isShooting)
+        if(readyToShoot && isShooting && bulletsLeft > 0)
         {
             burstBulletsLeft = bulletsPerBurst;
             FireWeapon();
+        }
+        if(AmmoManager.Instance.ammoDisplay != null)
+        {
+            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
+        }
+        //Se divide por buleltsPerBurst por si hay armas que disparen mas de una bala a la vez, AKA Escopetas
+        //!!!Poner BulletsPerBusrts siempre a 1, no queremos dividir por cero
+        if(Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Reload();
+        }
+        if(readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Reload();
         }
     }
 
     private void FireWeapon()
     {
+        bulletsLeft--;
         muzzleEffect.GetComponent<ParticleSystem>().Play();
+        animator.SetTrigger("Recoil");
+        SoundManager.Instance.ShootingPistol.Play();
 
         readyToShoot = false;
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
@@ -65,6 +96,19 @@ public class Weapon : MonoBehaviour
             burstBulletsLeft--;
             Invoke("FireWeapon", shootingDelay);
         }
+    }
+    private void Reload()
+    {
+        readyToShoot = false;
+        SoundManager.Instance.ReloadPistol.Play();
+        isReloading = true;
+        Invoke("ReloadCompleted", reloadTime);
+        readyToShoot = true;
+    }
+    private void ReloadCompleted()
+    {
+        bulletsLeft = magazineSize;
+        isReloading = false;
     }
 
     private void ResetShot()

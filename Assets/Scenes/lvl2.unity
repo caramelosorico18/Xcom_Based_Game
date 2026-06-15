@@ -759,6 +759,7 @@ Transform:
   - {fileID: 1182565544}
   - {fileID: 1627699004}
   - {fileID: 615641227}
+  - {fileID: 2003610244}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &412769540
@@ -1259,19 +1260,20 @@ MonoBehaviour:
   isShooting: 0
   readyToShoot: 0
   shootingDelay: 0.1
-  bulletsPerBurst: 3
+  bulletsPerBurst: 1
   burstBulletsLeft: 0
   spreadIntendity: 0.3
   bulletPrefab: {fileID: 1600753089513219201, guid: 05b9f41a4a25ba043a866dd362f4f539,
     type: 3}
   bulletSpawn: {fileID: 25878654}
-  bulletVelocity: 100
+  bulletVelocity: 50
   bulletPrefabLifeTime: 3
   muzzleEffect: {fileID: 2070344165020115967}
-  reloadTime: 0
-  magazineSize: 0
+  reloadTime: 4.2
+  magazineSize: 30
   bulletsLeft: 0
   isReloading: 0
+  thisWeaponModel: 1
   currentShootingMode: 2
 --- !u!1 &604415155
 GameObject:
@@ -1643,8 +1645,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1868505567}
-  - {fileID: 543450653117441034}
-  - {fileID: 4321461374121239896}
   m_Father: {fileID: 400755927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &615641228
@@ -9770,6 +9770,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2003610243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2003610244}
+  m_Layer: 3
+  m_Name: WeaponSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2003610244
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003610243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.062, y: -1.515, z: 4.593}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 543450653117441034}
+  - {fileID: 4321461374121239896}
+  m_Father: {fileID: 400755927}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2016936879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10286,7 +10319,7 @@ Transform:
   m_GameObject: {fileID: 2887030092992031410}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10337,7 +10370,7 @@ Transform:
   m_GameObject: {fileID: 897195595244720588}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.13699627, y: -0.033581052, z: 0}
+  m_LocalPosition: {x: -0.1369963, y: -0.033581052, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10352,7 +10385,7 @@ Transform:
   m_GameObject: {fileID: 919132148663107248}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.013, y: -0.273, z: 0.476}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10364,7 +10397,7 @@ Transform:
   - {fileID: 1421715873315374285}
   - {fileID: 3867298304006170483}
   - {fileID: 25878654}
-  m_Father: {fileID: 615641227}
+  m_Father: {fileID: 2003610244}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &704232308122053790
 GameObject:
@@ -10461,7 +10494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &919132148663107249
 Animator:
   serializedVersion: 5
@@ -15569,7 +15602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &3720006826650977843
 GameObject:
   m_ObjectHideFlags: 0
@@ -15651,7 +15684,7 @@ Transform:
   m_GameObject: {fileID: 3509212949927509986}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.01100038, y: -0.34899962, z: 0.4830008}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15660,7 +15693,7 @@ Transform:
   - {fileID: 33191037780332347}
   - {fileID: 358490637834328414}
   - {fileID: 624715517}
-  m_Father: {fileID: 615641227}
+  m_Father: {fileID: 2003610244}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &4321461374121239897
 MonoBehaviour:
@@ -15683,13 +15716,14 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1600753089513219201, guid: 05b9f41a4a25ba043a866dd362f4f539,
     type: 3}
   bulletSpawn: {fileID: 624715517}
-  bulletVelocity: 100
+  bulletVelocity: 50
   bulletPrefabLifeTime: 3
   muzzleEffect: {fileID: 957065793}
-  reloadTime: 1.5
+  reloadTime: 3.3
   magazineSize: 7
   bulletsLeft: 0
   isReloading: 0
+  thisWeaponModel: 0
   currentShootingMode: 0
 --- !u!95 &4321461374121239898
 Animator:
@@ -16101,7 +16135,7 @@ Transform:
   m_GameObject: {fileID: 3417191616562822491}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

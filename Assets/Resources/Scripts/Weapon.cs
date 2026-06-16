@@ -6,6 +6,7 @@ using TMPro;
 
 public class Weapon : MonoBehaviour
 {
+    public bool isActiveWeapon;
     public bool isShooting, readyToShoot;
     private bool allowReset = true;
     public float shootingDelay = 2f;
@@ -23,6 +24,9 @@ public class Weapon : MonoBehaviour
     public float reloadTime;
     public int magazineSize, bulletsLeft;
     public bool isReloading;
+
+    public Vector3 spawnPosition;
+    public Vector3 spawnRotation;
 
     public enum WeaponModel
     {
@@ -47,36 +51,38 @@ public class Weapon : MonoBehaviour
     }
     void Update()
     {
-        if(bulletsLeft == 0 && isShooting)
-        {
-            SoundManager.Instance.EmptyPistol.Play();
-        }
-        if(currentShootingMode == shootingMode.Auto)
-        {
-            isShooting = Input.GetKey(KeyCode.Mouse0); //hold button only
-        }
-        else if(currentShootingMode == shootingMode.Burst || currentShootingMode == shootingMode.Single)
-        {
-            isShooting = Input.GetKeyDown(KeyCode.Mouse0); //Just once per click
-        }
-        if(readyToShoot && isShooting && bulletsLeft > 0)
-        {
-            burstBulletsLeft = bulletsPerBurst;
-            FireWeapon();
-        }
-        if(AmmoManager.Instance.ammoDisplay != null)
-        {
-            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
-        }
-        //Se divide por buleltsPerBurst por si hay armas que disparen mas de una bala a la vez, AKA Escopetas
-        //!!!Poner BulletsPerBusrts siempre a 1, no queremos dividir por cero
-        if(Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Reload();
-        }
-        if(readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Reload();
+        if(isActiveWeapon){
+            if(bulletsLeft == 0 && isShooting)
+            {
+                SoundManager.Instance.EmptyPistol.Play();
+            }
+            if(currentShootingMode == shootingMode.Auto)
+            {
+                isShooting = Input.GetKey(KeyCode.Mouse0); //hold button only
+            }
+            else if(currentShootingMode == shootingMode.Burst || currentShootingMode == shootingMode.Single)
+            {
+                isShooting = Input.GetKeyDown(KeyCode.Mouse0); //Just once per click
+            }
+            if(readyToShoot && isShooting && bulletsLeft > 0)
+            {
+                burstBulletsLeft = bulletsPerBurst;
+                FireWeapon();
+            }
+            if(AmmoManager.Instance.ammoDisplay != null)
+            {
+                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
+            }
+            //Se divide por buleltsPerBurst por si hay armas que disparen mas de una bala a la vez, AKA Escopetas
+            //!!!Poner BulletsPerBusrts siempre a 1, no queremos dividir por cero
+            if(Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Reload();
+            }
+            if(readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Reload();
+            }
         }
     }
 
@@ -86,8 +92,8 @@ public class Weapon : MonoBehaviour
         muzzleEffect.GetComponent<ParticleSystem>().Play();
         animator.SetTrigger("Recoil");
 
-        //SoundManager.Instance.ShootingPistol.Play();
-        SoundManager.Instance.PlayShootingSound(thisWeaponModel);
+        SoundManager.Instance.ShootingPistol.Play();
+        //SoundManager.Instance.PlayShootingSound(thisWeaponModel);
 
         readyToShoot = false;
         Vector3 shootingDirection = CalculateDirectionAndSpread().normalized;
@@ -111,8 +117,8 @@ public class Weapon : MonoBehaviour
     {
         readyToShoot = false;
 
-        //SoundManager.Instance.ReloadPistol.Play();
-        SoundManager.Instance.PlayReloadSound(thisWeaponModel);
+        SoundManager.Instance.ReloadPistol.Play();
+        //SoundManager.Instance.PlayReloadSound(thisWeaponModel);
 
         animator.SetTrigger("Reload");
         isReloading = true;

@@ -25,16 +25,16 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayShootingSound(WeaponModel weapon)
+    /*public void PlayShootingSound(WeaponModel weapon)
     {
         switch (weapon)
         {
             case WeaponModel Pistol:
-            PistolShootingSound.Play();
+            ShootingPistol.PlayOneShot();
             break;
 
             case WeaponModel Rifle:
-            RifleShootingSound.Play();
+            ShootingRifle.PlayOneShot();
             break;
         }
     }
@@ -44,12 +44,12 @@ public class SoundManager : MonoBehaviour
         switch (weapon)
         {
             case WeaponModel Pistol:
-            PistolReloadingSound.Play();
+            ReloadPistol.Play();
             break;
 
             case WeaponModel Rifle:
-            RifleReloadingSound.Play();
+            ReloadRifle.Play();
             break;
         }
-    }
+    }*/
 }

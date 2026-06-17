@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
     public float bulletPrefabLifeTime = 3f;
 
     public GameObject muzzleEffect;
-    private Animator animator;
+    internal Animator animator;
 
     public float reloadTime;
     public int magazineSize, bulletsLeft;
@@ -51,35 +51,37 @@ public class Weapon : MonoBehaviour
     }
     void Update()
     {
-        if(isActiveWeapon){
-            if(bulletsLeft == 0 && isShooting)
+        if (isActiveWeapon)
+        {
+            if (bulletsLeft == 0 && isShooting)
             {
                 SoundManager.Instance.EmptyPistol.Play();
             }
-            if(currentShootingMode == shootingMode.Auto)
+            if (currentShootingMode == shootingMode.Auto)
             {
                 isShooting = Input.GetKey(KeyCode.Mouse0); //hold button only
             }
-            else if(currentShootingMode == shootingMode.Burst || currentShootingMode == shootingMode.Single)
+            else if (currentShootingMode == shootingMode.Burst || currentShootingMode == shootingMode.Single)
             {
                 isShooting = Input.GetKeyDown(KeyCode.Mouse0); //Just once per click
             }
-            if(readyToShoot && isShooting && bulletsLeft > 0)
+            if (readyToShoot && isShooting && bulletsLeft > 0)
             {
                 burstBulletsLeft = bulletsPerBurst;
                 FireWeapon();
             }
-            if(AmmoManager.Instance.ammoDisplay != null)
+            //Esta parte pasa a ser manejada por HUDManager.cs
+            /*if (AmmoManager.Instance.ammoDisplay != null)
             {
-                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
-            }
+                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft / bulletsPerBurst}/{magazineSize / bulletsPerBurst}";
+            }*/
             //Se divide por buleltsPerBurst por si hay armas que disparen mas de una bala a la vez, AKA Escopetas
             //!!!Poner BulletsPerBusrts siempre a 1, no queremos dividir por cero
-            if(Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Reload();
             }
-            if(readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
+            if (readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Reload();
             }
@@ -107,7 +109,7 @@ public class Weapon : MonoBehaviour
             Invoke("ResetShot", shootingDelay);
             allowReset = false;
         }
-        if(currentShootingMode == shootingMode.Burst && burstBulletsLeft > 1)
+        if (currentShootingMode == shootingMode.Burst && burstBulletsLeft > 1)
         {
             burstBulletsLeft--;
             Invoke("FireWeapon", shootingDelay);
@@ -142,7 +144,7 @@ public class Weapon : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         Vector3 targetPoint;
-        if(Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
             targetPoint = hit.point;
         }
@@ -162,6 +164,6 @@ public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(bulletPrefabLifeTime);
         Debug.Log("Bullet destroyed after " + bulletPrefabLifeTime + " seconds");
         Destroy(bullet);
-        
+
     }
 }

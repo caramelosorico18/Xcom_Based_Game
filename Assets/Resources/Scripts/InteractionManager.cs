@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    public static InteractionManager Instance{get; set;}
+    public static InteractionManager Instance { get; set; }
 
     public Weapon hoveredWeapon = null;
 
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -27,7 +27,7 @@ public class InteractionManager : MonoBehaviour
         {
             GameObject objectHitByRaycast = hit.transform.gameObject;
 
-            if (objectHitByRaycast.GetComponent<Weapon>())
+            if (objectHitByRaycast.GetComponent<Weapon>() && objectHitByRaycast.GetComponent<Weapon>().isActiveWeapon == false)
             {
                 hoveredWeapon = objectHitByRaycast.gameObject.GetComponent<Weapon>();
                 hoveredWeapon.GetComponent<Outline>().enabled = true;

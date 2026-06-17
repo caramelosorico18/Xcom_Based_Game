@@ -9,8 +9,8 @@ public class InteractionManager : MonoBehaviour
     public Weapon hoveredWeapon = null;
     public AmmoBox hoveredAmmoBox = null;
 
-    public GameObject laCajita;
-
+    public int totalPistolAmmo;
+    public int totalRifleAmmo;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -57,8 +57,6 @@ public class InteractionManager : MonoBehaviour
                 if(Input.GetKeyDown(KeyCode.F))
                 {
                     WeaponManager.Instance.PickupAmmo(hoveredAmmoBox);
-                    laCajita.SetActive(true);
-
                 }
             }
             else

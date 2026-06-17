@@ -81,7 +81,7 @@ public class Weapon : MonoBehaviour
             {
                 Reload();
             }
-            if (readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0))
+            if (readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0) && WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > 0)
             {
                 Reload();
             }
@@ -129,7 +129,16 @@ public class Weapon : MonoBehaviour
     }
     private void ReloadCompleted()
     {
-        bulletsLeft = magazineSize;
+        if(WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > magazineSize)
+        {
+            bulletsLeft = magazineSize;
+            DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
+        }
+        else
+        {
+            bulletsLeft = WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel);
+            DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
+        }
         isReloading = false;
     }
 
@@ -165,5 +174,19 @@ public class Weapon : MonoBehaviour
         Debug.Log("Bullet destroyed after " + bulletPrefabLifeTime + " seconds");
         Destroy(bullet);
 
+    }
+    
+    internal void DecreaseTotalAmmo(int bulletsToDecrease, Weapon.WeaponModel thisWeaponModel)
+    {
+        switch (thisWeaponModel)
+        {
+            case Weapon.WeaponModel.Rifle:
+                WeaponManager.Instance.totalRifleAmmo -= bulletsToDecrease;
+                break;
+
+            case Weapon.WeaponModel.Pistol:
+                WeaponManager.Instance.totalPistolAmmo -= bulletsToDecrease;
+                break;
+        }
     }
 }

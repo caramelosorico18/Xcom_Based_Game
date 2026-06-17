@@ -7,6 +7,10 @@ public class WeaponManager : MonoBehaviour
     public static WeaponManager Instance { get; set; }
     public List<GameObject> weaponSlots;
     public GameObject activeWeaponSlot;
+
+    [Header("Ammo")]
+    public int totalRifleAmmo = 0;
+    public int totalPistolAmmo = 0;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,14 +52,19 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    /*Esta parte del código permite soltar
-    y recoger armas del entorno, se va a implementar mas adelante*/
-    /*public void PickupWeapon(GameObject pickeupWeapon)
+   
+    public void PickupWeapon(GameObject pickedupWeapon)
     {
-        DropCurrentWeapon(pickeupWeapon);
+        AddWeaponIntoActiveSlot(pickedupWeapon);
+    }
+
+    public void AddWeaponIntoActiveSlot(GameObject pickedupWeapon)
+    {
+        DropCurrentWeapon(pickedupWeapon);
         pickedupWeapon.transform.SetParent(activeWeaponSlot.transform, false);
-        pickeupWeapon.transform.localPosition = new vector3(weaponSlots.spawnPosition.x, weaponSlots.spawnPosition.y, weaponSlots.spawnPosition.z);
-        pickeupWeapon.transform.localRotation = Quaternion.Euler(weaponSlots.spawnRotation.x, weaponSlots.spawnRotation.y, weaponSlots.spawnRotation.z);
+        Weapon weapon = pickedupWeapon.GetComponent<Weapon>();
+        pickedupWeapon.transform.localPosition = new Vector3(weapon.spawnPosition.x, weapon.spawnPosition.y, weapon.spawnPosition.z);
+        pickedupWeapon.transform.localRotation = Quaternion.Euler(weapon.spawnRotation.x, weapon.spawnRotation.y, weapon.spawnRotation.z);
         weapon.isActiveWeapon = true;
         weapon.animator.enabled = true;
     }
@@ -66,9 +75,24 @@ public class WeaponManager : MonoBehaviour
             weaponToDrop.GetComponent<Weapon>().animator.enabled = false;
             weaponToDrop.transform.SetParent(pickedupWeapon.transform.parent);
             weaponToDrop.transform.localPosition = pickedupWeapon.transform.localPosition;
+            weaponToDrop.transform.localRotation = pickedupWeapon.transform.localRotation;
+
         }
     }
-    */
+    
+
+    internal void PickupAmmo(AmmoBox ammo)
+    {
+        switch (ammo.ammoType)
+        {
+            case AmmoBox.AmmoType.PistolAmmo:
+                totalPistolAmmo += ammo.ammoAmount;
+                break;
+            case AmmoBox.AmmoType.RifleAmmo:
+                totalRifleAmmo += ammo.ammoAmount;
+                break;
+        }
+    }
 
     public void SwitchActiveSlot(int slotNumber)
     {
@@ -83,6 +107,21 @@ public class WeaponManager : MonoBehaviour
         {
             Weapon newWeapon = activeWeaponSlot.transform.GetChild(0).GetComponent<Weapon>();
             newWeapon.isActiveWeapon = true;
+        }
+    }
+
+    public int CheckAmmoLeftFor(Weapon.WeaponModel thisWeaponModel)
+    {
+        switch (thisWeaponModel)
+        {
+            case Weapon.WeaponModel.Rifle:
+                return totalRifleAmmo;
+
+            case Weapon.WeaponModel.Pistol:
+                return totalPistolAmmo;
+
+            default:
+                return 0;
         }
     }
 }

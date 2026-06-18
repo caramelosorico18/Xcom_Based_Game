@@ -52,7 +52,7 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-   
+
     public void PickupWeapon(GameObject pickedupWeapon)
     {
         AddWeaponIntoActiveSlot(pickedupWeapon);
@@ -68,8 +68,10 @@ public class WeaponManager : MonoBehaviour
         weapon.isActiveWeapon = true;
         weapon.animator.enabled = true;
     }
-    private void DropCurrentWeapon(GameObject pickedupWeapon){
-        if(activeWeaponSlot.transform.childCount > 0){
+    private void DropCurrentWeapon(GameObject pickedupWeapon)
+    {
+        if (activeWeaponSlot.transform.childCount > 0)
+        {
             var weaponToDrop = activeWeaponSlot.transform.GetChild(0).gameObject;
             weaponToDrop.GetComponent<Weapon>().isActiveWeapon = false;
             weaponToDrop.GetComponent<Weapon>().animator.enabled = false;
@@ -79,7 +81,7 @@ public class WeaponManager : MonoBehaviour
 
         }
     }
-    
+
 
     internal void PickupAmmo(AmmoBox ammo)
     {

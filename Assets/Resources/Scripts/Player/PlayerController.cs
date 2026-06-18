@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = -190f;
     public LayerMask groundMask;
     public GroundedController groundCheck;
+    public MouseController mouseController;
 
     public string direction;
     private bool isGrounded;
@@ -43,11 +44,6 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
-
-        /*if (Input.GetMouseButtonDown(0))
-        {
-            Shoot();
-        }*/
     }
 
     void ProcesarMovimiento()
@@ -56,8 +52,8 @@ public class PlayerController : MonoBehaviour
         float inputMovimientoZ = Input.GetAxis("Vertical");
         Vector3 move = transform.right * inputMovimientoZ + transform.forward * inputMovimientoX;
         player.AddForce(move * speed * Time.deltaTime);
-        //PyAnims.SetBool("Walking", true);
-        //if(inputMovimientoX == 0 && inputMovimientoZ == 0){PyAnims.SetBool("Walking", false);}
+
+        player.transform.localRotation = mouseController.currentRotation;
     }
     void FixedUpdate()
     {
@@ -66,48 +62,38 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("d"))
         {
             player.AddForce(transform.right * speed);
-            //anim.SetBool("Walking", true);
-            //direction = 1;
         }
         if (Input.GetKey("s"))
         {
             player.AddForce(transform.forward * -speed);
-            //direction = 2;
         }
         if (Input.GetKey("a"))
         {
             player.AddForce(transform.right * -speed);
-            //anim.SetBool("Walking", true);
-            //direction = 3;
         }
         if (Input.GetKey("w"))
         {
             player.AddForce(transform.forward * speed);
-            //direction = 4;
         }
         if (Input.GetKey("w") && Input.GetKey("d"))
         {
             player.AddForce(transform.right * speed);
             player.AddForce(transform.forward * speed);
-            //direction = 5;
         }
         if (Input.GetKey("w") && Input.GetKey("a"))
         {
             player.AddForce(transform.right * speed);
             player.AddForce(transform.forward * speed);
-            //direction = 6;
         }
         if (Input.GetKey("s") && Input.GetKey("a"))
         {
             player.AddForce(transform.right * speed);
             player.AddForce(transform.forward * speed);
-            //direction = 7;
         }
         if (Input.GetKey("s") && Input.GetKey("d"))
         {
             player.AddForce(transform.right * speed);
             player.AddForce(transform.forward * speed);
-            //direction = 8;
         }
         if (Input.GetKey("space") && isGrounded == true)
         {
@@ -120,18 +106,4 @@ public class PlayerController : MonoBehaviour
         gameObject.SetActive(false);
         Debug.Log("Sa Murío");
     }
-
-    /*public void Shoot()
-    {
-        GameObject bullet = BulletPool.SharedInstance.GetPooledObject();
-        if (bullet != null)
-        {
-            bullet.transform.position = playerb.transform.position;
-            bullet.transform.rotation = playerb.transform.rotation;
-            if (Time.timeScale != 0)
-            {
-                bullet.SetActive(true);
-            }
-        }
-    }*/
 }

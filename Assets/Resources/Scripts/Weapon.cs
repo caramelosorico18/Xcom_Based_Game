@@ -77,11 +77,14 @@ public class Weapon : MonoBehaviour
             }*/
             //Se divide por buleltsPerBurst por si hay armas que disparen mas de una bala a la vez, AKA Escopetas
             //!!!Poner BulletsPerBusrts siempre a 1, no queremos dividir por cero
-            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false && !Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && isReloading == false)
             {
                 Reload();
             }
-            if (readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0 && !Input.GetKeyDown(KeyCode.Mouse0) && WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > 0)
+
+            //condición retirada, se usará con la bolsa de munición principal, la cual se implementará mas tarde
+            // && WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > 0
+            if (readyToShoot && isShooting == false && isReloading == false && bulletsLeft <= 0)
             {
                 Reload();
             }
@@ -129,7 +132,10 @@ public class Weapon : MonoBehaviour
     }
     private void ReloadCompleted()
     {
-        if(WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > magazineSize)
+        bulletsLeft = magazineSize;
+        isReloading = false;
+        //Esta condición va a apartarse para mas tarde, de momento de dejará munición infinita
+        /*if (WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > magazineSize)
         {
             bulletsLeft = magazineSize;
             DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
@@ -139,7 +145,7 @@ public class Weapon : MonoBehaviour
             bulletsLeft = WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel);
             DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
         }
-        isReloading = false;
+        isReloading = false;*/
     }
 
     private void ResetShot()
@@ -175,7 +181,7 @@ public class Weapon : MonoBehaviour
         Destroy(bullet);
 
     }
-    
+
     internal void DecreaseTotalAmmo(int bulletsToDecrease, Weapon.WeaponModel thisWeaponModel)
     {
         switch (thisWeaponModel)

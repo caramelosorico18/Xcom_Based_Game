@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance{get; set;}
+    public static SoundManager Instance { get; set; }
     public AudioSource ShootingRifle;
     public AudioSource ReloadRifle;
 
@@ -13,9 +13,9 @@ public class SoundManager : MonoBehaviour
     public AudioSource EmptyPistol;
 
 
-   private void Awake()
+    private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
